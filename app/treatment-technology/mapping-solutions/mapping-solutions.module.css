@@ -1,0 +1,57 @@
+.bridge {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-left: 4px solid var(--sky);
+  border-radius: 12px;
+  padding: 18px 24px;
+  margin-bottom: 40px;
+  font-size: 0.94rem;
+  color: var(--slate);
+}
+
+.evidenceCard {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 20px rgba(20, 53, 95, 0.05);
+}
+.sourceTag {
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin-bottom: 8px;
+  display: inline-block;
+}
+.evidenceCard p {
+  margin-bottom: 0;
+  color: var(--ink);
+}
+
+.questionBlock {
+  background: linear-gradient(120deg, var(--navy) 0%, #1e4a80 60%, var(--sky) 100%);
+  border-radius: 20px;
+  padding: 34px 38px;
+  color: var(--white);
+}
+.questionBlock h3 {
+  font-family: var(--font-fraunces);
+  font-weight: 650;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+.questionBlock p {
+  color: #cfe0f0;
+  margin-bottom: 0;
+  max-width: 60ch;
+}
+
+@media (max-width: 720px) {
+  .evidenceCard,
+  .questionBlock {
+    padding: 22px 20px;
+  }
+}

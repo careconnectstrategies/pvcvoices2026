@@ -1,0 +1,103 @@
+.calloutGreen {
+  background: #eaf6ee;
+  border-color: #c9e7d2;
+}
+
+.statFlag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  padding: 12px 18px;
+  margin: 10px 0;
+}
+.statFlag .num {
+  font-family: var(--font-fraunces);
+  font-weight: 650;
+  font-size: 1.6rem;
+  color: var(--navy);
+  flex-shrink: 0;
+}
+.statFlag .lbl {
+  font-size: 0.85rem;
+  color: var(--slate);
+}
+
+.techCard {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  padding: 26px 28px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 20px rgba(20, 53, 95, 0.05);
+}
+.stage {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.stage.established {
+  background: #eaf6ee;
+  color: var(--green, #1f6b3b);
+}
+.stage.emerging {
+  background: #fceedc;
+  color: var(--amber-deep);
+}
+.stage.early {
+  background: #fae3e5;
+  color: var(--rose-deep);
+}
+
+.horizonGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 16px 0;
+}
+.horizonItem {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+.horizonItem h5 {
+  font-family: var(--font-fraunces);
+  font-weight: 650;
+  color: var(--navy);
+  font-size: 0.92rem;
+  margin-bottom: 4px;
+}
+.horizonItem p {
+  color: var(--slate);
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+.askList {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 0 8px 20px rgba(20, 53, 95, 0.05);
+}
+.askList ol {
+  margin: 0 0 0 20px;
+  color: var(--slate);
+}
+.askList li {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 720px) {
+  .horizonGrid {
+    grid-template-columns: 1fr;
+  }
+}

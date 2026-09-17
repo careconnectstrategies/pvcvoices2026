@@ -1,0 +1,159 @@
+/* Treatment & Technology hub — three-tier overview, subpage grid, decision teaser */
+
+.tierGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.tierCard {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 22px 22px;
+  box-shadow: 0 8px 20px rgba(20, 53, 95, 0.05);
+}
+.tierCard.highlight {
+  border: 2px solid var(--rose);
+  background: linear-gradient(180deg, var(--white) 0%, #fdf2f0 100%);
+}
+.step {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #8195a8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.tierCard h4 {
+  font-family: var(--font-fraunces);
+  font-weight: 650;
+  color: var(--navy);
+  font-size: 1.02rem;
+  margin-bottom: 8px;
+}
+.tierCard p {
+  color: var(--slate);
+  font-size: 0.88rem;
+  margin-bottom: 0;
+}
+
+.subGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+.subCard {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  padding: 26px 28px;
+  text-decoration: none;
+  display: flex;
+  gap: 16px;
+  transition: 0.15s;
+  box-shadow: 0 8px 20px rgba(20, 53, 95, 0.05);
+}
+.subCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(20, 53, 95, 0.11);
+  border-color: var(--sky);
+}
+.subCard .icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.icon.c1 {
+  background: var(--sky-pale);
+}
+.icon.c2 {
+  background: #fceedc;
+}
+.icon.c3 {
+  background: #fae3e5;
+}
+.icon.c4 {
+  background: #eaf6ee;
+}
+.subCard .num {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+  color: #8195a8;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: block;
+}
+.subCard h3 {
+  font-family: var(--font-fraunces);
+  font-weight: 650;
+  color: var(--navy);
+  font-size: 1.08rem;
+  margin-bottom: 6px;
+}
+.subCard p {
+  color: var(--slate);
+  font-size: 0.88rem;
+  margin: 0;
+}
+.subCardWide {
+  grid-column: 1 / -1;
+}
+
+.decisionTeaser {
+  background: linear-gradient(120deg, var(--navy) 0%, #1e4a80 60%, var(--sky) 100%);
+  border-radius: 22px;
+  padding: 38px 42px;
+  color: var(--white);
+}
+.decisionTeaser :global(.kicker) {
+  color: var(--amber);
+}
+.decisionTeaser h2 {
+  color: var(--white);
+  margin-top: 8px;
+}
+.decisionTeaser p {
+  color: #cfe0f0;
+  max-width: 56ch;
+  margin-bottom: 22px;
+}
+.miniFlow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.miniStep {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--sky-pale);
+}
+.miniArrow {
+  color: #8fb3d1;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 760px) {
+  .tierGrid,
+  .subGrid {
+    grid-template-columns: 1fr;
+  }
+  .subCardWide {
+    grid-column: auto;
+  }
+  .decisionTeaser {
+    padding: 30px 26px;
+  }
+}

@@ -1,0 +1,123 @@
+.tierGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 18px 0;
+}
+.tierCard {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 22px 22px;
+  box-shadow: 0 8px 20px rgba(20, 53, 95, 0.05);
+}
+.tierCard.highlight {
+  border: 2px solid var(--rose);
+  background: linear-gradient(180deg, var(--white) 0%, #fdf2f0 100%);
+}
+.step {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #8195a8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.tierCard h4 {
+  font-family: var(--font-fraunces);
+  font-weight: 650;
+  color: var(--navy);
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+.tierCard p {
+  color: var(--slate);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.termCard {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 20px rgba(20, 53, 95, 0.05);
+}
+.termCard h4 {
+  font-family: var(--font-fraunces);
+  font-weight: 650;
+  color: var(--navy);
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.miniTermGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 18px 0;
+}
+.miniTerm {
+  background: var(--sky-pale);
+  border: 1px solid #d7e7f2;
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+.miniTerm h5 {
+  font-family: var(--font-fraunces);
+  font-weight: 650;
+  color: var(--navy);
+  font-size: 0.98rem;
+  margin-bottom: 6px;
+}
+.miniTerm p {
+  color: var(--slate);
+  font-size: 0.88rem;
+  margin-bottom: 0;
+}
+
+.resLink {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  padding: 18px 22px;
+  text-decoration: none;
+  transition: 0.15s;
+  margin-top: 14px;
+}
+.resLink:hover {
+  border-color: var(--sky);
+  transform: translateX(2px);
+}
+.resIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--sky-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.resTitle {
+  color: var(--navy);
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: block;
+}
+.resDomain {
+  color: #8195a8;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 720px) {
+  .tierGrid,
+  .miniTermGrid {
+    grid-template-columns: 1fr;
+  }
+}

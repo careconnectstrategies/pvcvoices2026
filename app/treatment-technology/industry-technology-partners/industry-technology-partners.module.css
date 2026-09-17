@@ -1,0 +1,131 @@
+.templateCard {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 20px;
+  padding: 30px 34px;
+  box-shadow: 0 10px 26px rgba(20, 53, 95, 0.06);
+  margin: 18px 0;
+}
+.templateField {
+  margin-bottom: 20px;
+}
+.templateField:last-child {
+  margin-bottom: 0;
+}
+.label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin-bottom: 6px;
+  display: block;
+}
+.example {
+  background: var(--cream);
+  border: 1px dashed #d7dee6;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  color: var(--slate);
+}
+.templateField ul {
+  margin: 6px 0 0 20px;
+  color: var(--slate);
+  font-size: 0.9rem;
+}
+.templateField li {
+  margin-bottom: 4px;
+}
+
+.submitCta {
+  background: linear-gradient(120deg, var(--navy) 0%, #1e4a80 60%, var(--sky) 100%);
+  border-radius: 20px;
+  padding: 30px 34px;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.submitCta h3 {
+  font-family: var(--font-fraunces);
+  font-weight: 650;
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+  color: var(--white);
+}
+.submitCta p {
+  color: #cfe0f0;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.makerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 18px 0;
+}
+.makerCard {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 8px 20px rgba(20, 53, 95, 0.05);
+}
+.makerCard h4 {
+  font-family: var(--font-fraunces);
+  font-weight: 650;
+  color: var(--navy);
+  font-size: 1.05rem;
+  margin-bottom: 2px;
+}
+.focus {
+  font-size: 0.8rem;
+  color: var(--sky);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.makerCard dl {
+  font-size: 0.87rem;
+  color: var(--slate);
+}
+.makerCard dt {
+  font-weight: 800;
+  color: var(--navy);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 10px;
+}
+.makerCard dt:first-child {
+  margin-top: 0;
+}
+.makerCard dd {
+  margin-bottom: 2px;
+}
+.contactLink {
+  color: var(--sky);
+  font-weight: 700;
+  text-decoration: none;
+}
+.contactLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .makerGrid {
+    grid-template-columns: 1fr;
+  }
+  .submitCta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .templateCard {
+    padding: 24px 22px;
+  }
+}
