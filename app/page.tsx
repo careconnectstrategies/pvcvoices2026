@@ -50,10 +50,10 @@ export default function HomePage() {
             </div>
             <figure className={styles.polaroid}>
               <p className={styles.beat}>
-                &ldquo;I feel every beat. For years I was told it was
+                &ldquo;I feel every heartbeat. For years I was told it was
                 nothing.&rdquo;
               </p>
-              <figcaption className={styles.who}>— A PVC Voices story</figcaption>
+              <figcaption className={styles.who}>— TYPICAL PVC EXPERIENCE</figcaption>
             </figure>
           </div>
         </div>
@@ -242,6 +242,11 @@ export default function HomePage() {
                 </div>
               </article>
             </div>
+            <p className={styles.storiesNote}>
+              Unless specifically noted, all quotes are illustrative
+              examples only as we grow our community and awareness of
+              this condition.
+            </p>
             <p className={styles.storiesCta}>
               <Link href="/patient-stories">Read more community stories →</Link>
             </p>

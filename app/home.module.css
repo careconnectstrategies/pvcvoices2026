@@ -353,9 +353,17 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+.storiesNote {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 0.85rem;
+  color: var(--slate);
+  font-style: italic;
+}
+
 .storiesCta {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 16px;
 }
 
 .signup {
