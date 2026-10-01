@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
-type Step = "form" | "done";
+type Step = "form" | "check-email" | "done";
 
 export default function RegisterForm({ next }: { next: string }) {
   const [firstName, setFirstName] = useState("");
@@ -42,14 +42,31 @@ export default function RegisterForm({ next }: { next: string }) {
       return;
     }
 
-    setStep("done");
+    setStep(data.session ? "done" : "check-email");
+  }
+
+  if (step === "check-email") {
+    return (
+      <div className="form-card">
+        <div className="success-banner">
+          Almost there — check {email} for a confirmation link, then log in.
+        </div>
+        <p style={{ color: "var(--slate)", fontSize: ".92rem" }}>
+          Once you&apos;ve confirmed your email,{" "}
+          <Link href={`/login?next=${encodeURIComponent(next)}`} style={{ color: "var(--rose-deep)", fontWeight: 800 }}>
+            log in here →
+          </Link>
+        </p>
+      </div>
+    );
   }
 
   if (step === "done") {
     return (
       <div className="form-card">
         <div className="success-banner">
-          SUCCESS. You are registered as a community member.
+          Account created! You&apos;re logged in and ready to share your
+          story.
         </div>
         <Link className="btn btn-amber" href={next}>
           Continue →

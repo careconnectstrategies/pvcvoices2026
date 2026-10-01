@@ -45,11 +45,12 @@ npm run dev
    - `letter_requests` — "Send a Letter on My Behalf" requests
    - Row-level security policies for all of the above
 4. In **Authentication → Providers**, email/password is enabled by default.
-   In **Authentication → Sign In / Providers → Email**, make sure
-   **Confirm email** is turned **Off**. This site does not send any
-   confirmation emails — the registration form logs people in
-   immediately after signup, so Confirm email must stay off or new
-   accounts will be stuck waiting on a link that never arrives.
+   In **Authentication → Sign In / Providers → Email**, you can toggle
+   **Confirm email**:
+   - **Off** — new accounts are usable immediately (simplest while testing).
+   - **On** (recommended before launch) — users must click a confirmation
+     link before they can log in. The site already handles both cases (it
+     shows a "check your email" message when confirmation is required).
 
 Moderation for stories/replies/contact/letter requests happens in the
 Supabase **Table Editor** — there's no admin UI in the app itself.
