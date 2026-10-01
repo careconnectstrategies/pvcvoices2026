@@ -673,6 +673,21 @@ footer.site-footer a {
 footer.site-footer a:hover {
   color: var(--white);
 }
+.photo-disclaimer {
+  background: rgba(242, 169, 59, 0.14);
+  border: 1px solid rgba(242, 169, 59, 0.4);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  color: var(--white);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.55;
+  max-width: 74em;
+}
+.photo-disclaimer strong {
+  color: var(--white);
+}
 .disclaimer {
   border-top: 1px solid rgba(159, 180, 205, 0.25);
   padding-top: 18px;

@@ -32,6 +32,11 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+        <p className="photo-disclaimer">
+          📷 <strong>Photo notice:</strong> All photos on this site are
+          stock or AI-generated representative images only. They do not
+          depict real PVC Voices patients, staff, or stories.
+        </p>
         <p className="disclaimer">
           <strong>Medical disclaimer:</strong> PVC Voices is a patient-run
           educational and advocacy platform. Content on this site is for

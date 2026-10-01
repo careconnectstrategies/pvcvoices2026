@@ -41,7 +41,7 @@ export default function HomePage() {
           <div className={styles.heroPhoto}>
             <div className={styles.frame}>
               <FallbackImage
-                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=70"
+                src="/images/1_stockphoto_credit_christian-buehner-2ooHCo-epdA-unsplash.jpg"
                 alt="People smiling together outdoors, arms around each other"
               />
             </div>
@@ -78,7 +78,7 @@ export default function HomePage() {
           <div className={`wrap ${styles.introGrid}`}>
             <div className={styles.introPhoto}>
               <FallbackImage
-                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?auto=format&fit=crop&w=900&q=70"
+                src="/images/2_Gemini_Generated_Image_doctor-talking-to-man.jpeg"
                 alt="A clinician and patient in conversation"
               />
             </div>
@@ -193,7 +193,7 @@ export default function HomePage() {
               <article className={styles.storyCard}>
                 <div className={styles.ph}>
                   <FallbackImage
-                    src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=800&q=70"
+                    src="/images/3_stockphoto_credit_margo-evardson-d9VDci2N69Q-unsplash.jpg"
                     alt="Person in a thoughtful moment"
                   />
                 </div>
@@ -210,7 +210,7 @@ export default function HomePage() {
               <article className={styles.storyCard}>
                 <div className={styles.ph}>
                   <FallbackImage
-                    src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=70"
+                    src="/images/4_Gemini_Generated_Image_ib68xvib68xvib68.jpeg"
                     alt="A physician listening attentively"
                   />
                 </div>
@@ -227,7 +227,7 @@ export default function HomePage() {
               <article className={styles.storyCard}>
                 <div className={styles.ph}>
                   <FallbackImage
-                    src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=70"
+                    src="/images/5_stockphoto_credit_beth-macdonald-cAZKcDUEf1k-unsplash.jpg"
                     alt="Two people shaking hands in support"
                   />
                 </div>
