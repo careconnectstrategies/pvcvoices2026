@@ -101,6 +101,16 @@
   display: flex;
   gap: 18px;
 }
+.docCardEmpty {
+  background: var(--sky-pale);
+  border: 1px dashed var(--hairline);
+  border-radius: 16px;
+  padding: 24px 26px;
+  margin-bottom: 16px;
+  color: var(--slate);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
 .docAvatar {
   width: 52px;
   height: 52px;

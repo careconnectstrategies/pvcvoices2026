@@ -126,21 +126,12 @@ export default function FindASpecialistPage() {
                 exactly the network we want to grow.
               </p>
 
-              <div className={styles.docCard}>
-                <div className={styles.docAvatar}>ML</div>
-                <div>
-                  <h4>Dr. Mike Link</h4>
-                  <div className={styles.practice}>AtlantiCare Physician Group, Cardiology</div>
-                  <div className={styles.address}>517 NJ-72 Suite B, Manahawkin, NJ 08050</div>
-                  <q>
-                    He helped me versus all of the other doctors I&apos;ve
-                    seen since. Bold, aggressive, confident, and
-                    knowledgeable — patient-focused, not stuck in dogma. He
-                    tries to help you the best he can without dismissing
-                    you because of your problems.
-                  </q>
-                  <div className={styles.patient}>— PVC Voices community member</div>
-                </div>
+              <div className={styles.docCardEmpty}>
+                <em>
+                  No community nominations yet — be the first to
+                  recognize a specialist who took your low-burden,
+                  highly symptomatic, or complex PVCs seriously.
+                </em>
               </div>
 
               <div className={styles.nominate}>
