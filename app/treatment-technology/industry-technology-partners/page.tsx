@@ -5,7 +5,11 @@ import SubNav from "@/components/SubNav";
 import { TREATMENT_TECH_LINKS } from "@/lib/nav";
 import styles from "./industry-technology-partners.module.css";
 
-export const metadata: Metadata = { title: "Industry & Technology Partners" };
+export const metadata: Metadata = {
+  title: "Industry & Technology Partners",
+  description:
+    "The medical device and technology companies advancing PVC mapping and ablation tools, and how their innovations affect patient care.",
+};
 
 export default function IndustryTechnologyPartnersPage() {
   return (

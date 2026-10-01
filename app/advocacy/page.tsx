@@ -3,7 +3,11 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import styles from "./advocacy.module.css";
 
-export const metadata: Metadata = { title: "Advocacy" };
+export const metadata: Metadata = {
+  title: "Advocacy",
+  description:
+    "How PVC Voices is pushing HRS, ACC, and AHA to weigh symptom burden alongside PVC count in treatment guidelines \u2014 and how you can get involved.",
+};
 
 export default function AdvocacyPage() {
   return (

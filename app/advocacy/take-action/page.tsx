@@ -6,7 +6,11 @@ import CopyAddressButton from "@/components/CopyAddressButton";
 import LetterBuilder from "@/components/LetterBuilder";
 import styles from "./take-action.module.css";
 
-export const metadata: Metadata = { title: "Take Action" };
+export const metadata: Metadata = {
+  title: "Take Action",
+  description:
+    "Send a letter to the Heart Rhythm Society, ACC, and AHA to push for symptom-inclusive PVC treatment guidelines, with contact info, templates, and mailing addresses.",
+};
 
 const ADVOCACY_LINKS = [
   { href: "/advocacy/who-makes-the-rules", label: "Who Makes the Rules?" },

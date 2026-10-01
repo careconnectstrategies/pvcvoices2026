@@ -5,7 +5,11 @@ import SubNav from "@/components/SubNav";
 import { TREATMENT_TECH_LINKS } from "@/lib/nav";
 import styles from "./ablation-basics.module.css";
 
-export const metadata: Metadata = { title: "Ablation Basics" };
+export const metadata: Metadata = {
+  title: "Ablation Basics",
+  description:
+    "What cardiac ablation for PVCs is, how the procedure works, success rates, and what to expect \u2014 explained in plain language.",
+};
 
 export default function AblationBasicsPage() {
   return (

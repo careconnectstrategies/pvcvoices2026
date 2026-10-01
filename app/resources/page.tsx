@@ -3,7 +3,11 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import styles from "./resources.module.css";
 
-export const metadata: Metadata = { title: "Resources" };
+export const metadata: Metadata = {
+  title: "Resources",
+  description:
+    "Curated PVC resources: clinical trial updates, patient education links, a glossary of terms, and trusted sources on premature ventricular contractions and ablation.",
+};
 
 export default function ResourcesPage() {
   return (

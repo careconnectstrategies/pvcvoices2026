@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import RegisterForm from "@/components/RegisterForm";
 
-export const metadata: Metadata = { title: "Create an Account" };
+export const metadata: Metadata = {
+  title: "Create an Account",
+  description: "Create a free PVC Voices account to share your story and connect with others living with premature ventricular contractions.",
+  robots: { index: false, follow: true },
+};
 
 export default async function RegisterPage(props: PageProps<"/register">) {
   const params = await props.searchParams;

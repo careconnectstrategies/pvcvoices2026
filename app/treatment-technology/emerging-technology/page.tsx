@@ -5,7 +5,11 @@ import SubNav from "@/components/SubNav";
 import { TREATMENT_TECH_LINKS } from "@/lib/nav";
 import styles from "./emerging-technology.module.css";
 
-export const metadata: Metadata = { title: "Emerging Technology" };
+export const metadata: Metadata = {
+  title: "Emerging Technology",
+  description:
+    "Emerging PVC treatment technology, from pulse field ablation to AI-assisted ECG mapping, and the clinical trials shaping the future of care.",
+};
 
 export default function EmergingTechnologyPage() {
   return (

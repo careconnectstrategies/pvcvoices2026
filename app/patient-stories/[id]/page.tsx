@@ -18,8 +18,17 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { id } = await props.params;
   const supabase = await createClient();
-  const { data: story } = await supabase.from("stories").select("title").eq("id", id).single();
-  return { title: story?.title ?? "Story" };
+  const { data: story } = await supabase
+    .from("stories")
+    .select("title, body")
+    .eq("id", id)
+    .single();
+  const excerpt = story?.body
+    ? story.body.length > 155
+      ? `${story.body.slice(0, 155)}\u2026`
+      : story.body
+    : "A real PVC patient story shared with the PVC Voices community.";
+  return { title: story?.title ?? "Story", description: excerpt };
 }
 
 export default async function StoryDetailPage(props: PageProps<"/patient-stories/[id]">) {

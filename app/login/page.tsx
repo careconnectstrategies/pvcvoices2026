@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import LoginForm from "@/components/LoginForm";
 
-export const metadata: Metadata = { title: "Log In" };
+export const metadata: Metadata = {
+  title: "Log In",
+  description: "Log in to your PVC Voices account to share your story and join the community.",
+  robots: { index: false, follow: true },
+};
 
 export default async function LoginPage(props: PageProps<"/login">) {
   const params = await props.searchParams;

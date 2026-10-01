@@ -6,7 +6,11 @@ import { TREATMENT_TECH_LINKS } from "@/lib/nav";
 import SpecialistSearch from "./SpecialistSearch";
 import styles from "./find-a-specialist.module.css";
 
-export const metadata: Metadata = { title: "Find a Specialist" };
+export const metadata: Metadata = {
+  title: "Find a Specialist",
+  description:
+    "How to find an electrophysiologist who takes low-burden, highly symptomatic PVCs seriously, plus screening questions to ask before booking.",
+};
 
 export default function FindASpecialistPage() {
   return (

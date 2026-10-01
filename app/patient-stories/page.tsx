@@ -6,7 +6,11 @@ import { createClient } from "@/lib/supabase/server";
 import { tagClassFor, pvcTypeLabel, type Story } from "@/lib/types";
 import styles from "./patient-stories.module.css";
 
-export const metadata: Metadata = { title: "Patient Stories" };
+export const metadata: Metadata = {
+  title: "Patient Stories",
+  description:
+    "Real stories from people living with PVCs \u2014 low-burden but high-symptom cases, multifocal PVCs, and the search for doctors who listen. Read and share your own story.",
+};
 
 function byline(story: Story) {
   if (story.display_name && story.display_city) return `${story.display_name}, ${story.display_city}`;

@@ -5,7 +5,11 @@ import SubNav from "@/components/SubNav";
 import { ADVOCACY_LINKS } from "@/lib/nav";
 import styles from "./who-makes-the-rules.module.css";
 
-export const metadata: Metadata = { title: "Who Makes the Rules?" };
+export const metadata: Metadata = {
+  title: "Who Makes the Rules?",
+  description:
+    "How HRS, ACC, and AHA set the burden-based thresholds doctors use to decide PVC treatment \u2014 and why that framework can leave symptomatic patients untreated.",
+};
 
 export default function WhoMakesTheRulesPage() {
   return (

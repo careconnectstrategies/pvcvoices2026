@@ -5,7 +5,11 @@ import SubNav from "@/components/SubNav";
 import { TREATMENT_TECH_LINKS } from "@/lib/nav";
 import styles from "./mapping-solutions.module.css";
 
-export const metadata: Metadata = { title: "Mapping Solutions for Hard-to-Catch PVCs" };
+export const metadata: Metadata = {
+  title: "Mapping Solutions for Hard-to-Catch PVCs",
+  description:
+    "How doctors locate hard-to-catch PVCs using activation and pace mapping, plus emerging techniques for elusive, low-frequency beats.",
+};
 
 export default function MappingSolutionsPage() {
   return (

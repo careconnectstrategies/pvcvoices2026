@@ -5,7 +5,11 @@ import SubNav from "@/components/SubNav";
 import { TREATMENT_TECH_LINKS } from "@/lib/nav";
 import styles from "./is-ablation-right-for-me.module.css";
 
-export const metadata: Metadata = { title: "Is Ablation Right for Me?" };
+export const metadata: Metadata = {
+  title: "Is Ablation Right for Me?",
+  description:
+    "A decision guide for low-burden, high-symptom, and complex multifocal PVC cases that standard treatment guidelines often overlook.",
+};
 
 export default function IsAblationRightForMePage() {
   return (

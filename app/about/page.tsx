@@ -2,7 +2,11 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 
-export const metadata: Metadata = { title: "About PVCs" };
+export const metadata: Metadata = {
+  title: "About PVCs",
+  description:
+    "What premature ventricular contractions (PVCs) are, why burden counts alone miss symptom severity, and why low-burden, highly symptomatic and multifocal PVCs deserve serious treatment consideration.",
+};
 
 export default function AboutPage() {
   return (

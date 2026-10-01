@@ -5,7 +5,11 @@ import SubNav from "@/components/SubNav";
 import { TREATMENT_TECH_LINKS } from "@/lib/nav";
 import styles from "./safety-evidence.module.css";
 
-export const metadata: Metadata = { title: "Safety & Evidence" };
+export const metadata: Metadata = {
+  title: "Safety & Evidence",
+  description:
+    "The evidence behind PVC ablation safety and outcomes, including research on where burden-only thresholds miss symptomatic patients.",
+};
 
 export default function SafetyEvidencePage() {
   return (

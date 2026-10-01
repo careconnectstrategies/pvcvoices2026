@@ -3,7 +3,11 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import styles from "./treatment-technology.module.css";
 
-export const metadata: Metadata = { title: "Treatment & Technology" };
+export const metadata: Metadata = {
+  title: "Treatment & Technology",
+  description:
+    "Explore PVC treatment and technology: ablation basics, mapping solutions, emerging tech, industry partners, and how to find the right specialist.",
+};
 
 export default function TreatmentTechnologyPage() {
   return (

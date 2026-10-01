@@ -4,7 +4,11 @@ import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
 import LetterRequestForm from "@/components/LetterRequestForm";
 
-export const metadata: Metadata = { title: "Contact" };
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Contact PVC Voices with questions or feedback, nominate an electrophysiologist, or send a letter to medical societies about PVC treatment guidelines.",
+};
 
 export default function ContactPage() {
   return (
