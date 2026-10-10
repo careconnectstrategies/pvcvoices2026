@@ -51,6 +51,11 @@ export default function LoginForm({ next }: { next: string }) {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
+      <p style={{ margin: "-6px 0 16px", fontSize: ".9rem" }}>
+        <Link href="/forgot-password" style={{ color: "var(--rose-deep)", fontWeight: 800 }}>
+          Forgot password?
+        </Link>
+      </p>
       <button className="btn btn-amber" type="submit" disabled={pending}>
         {pending ? "Logging in…" : "Log in"}
       </button>
