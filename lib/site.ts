@@ -7,12 +7,26 @@
 // 2. VERCEL_PROJECT_PRODUCTION_URL — set automatically by Vercel on every
 //    deployment, so links still resolve correctly even before step 1 is set.
 // 3. A localhost fallback for local development.
+//
+// Values are normalized (https:// added if missing, trailing slash removed)
+// and validated, so a typo in the env var can never break the build.
+function normalize(raw: string | undefined): string | null {
+  const trimmed = raw?.trim();
+  if (!trimmed) return null;
+  const withProtocol = /^https?:\/\//i.test(trimmed)
+    ? trimmed
+    : `https://${trimmed}`;
+  try {
+    return new URL(withProtocol).origin;
+  } catch {
+    return null;
+  }
+}
+
 export function getSiteUrl(): string {
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/+$/, "");
-  }
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  }
-  return "http://localhost:3000";
+  return (
+    normalize(process.env.NEXT_PUBLIC_SITE_URL) ??
+    normalize(process.env.VERCEL_PROJECT_PRODUCTION_URL) ??
+    "http://localhost:3000"
+  );
 }
