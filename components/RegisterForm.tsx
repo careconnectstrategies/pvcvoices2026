@@ -189,10 +189,6 @@ export default function RegisterForm({ next }: { next: string }) {
         <Link href={`/login?next=${encodeURIComponent(next)}`} style={{ color: "var(--rose-deep)", fontWeight: 800 }}>
           Log in instead →
         </Link>
-        {" · "}
-        <Link href="/forgot-password" style={{ color: "var(--rose-deep)", fontWeight: 800 }}>
-          Forgot password?
-        </Link>
       </p>
     </form>
   );
