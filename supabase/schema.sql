@@ -176,3 +176,37 @@ create policy "letter_requests: insert public"
   on public.letter_requests for insert
   to anon, authenticated
   with check (true);
+
+-- ============================================================
+-- SELF-HEAL — if a table was created earlier with a different
+-- shape (CREATE TABLE IF NOT EXISTS never alters an existing
+-- table), make sure every column the site writes to exists.
+-- Safe to re-run.
+-- ============================================================
+alter table public.profiles add column if not exists first_name text;
+alter table public.profiles add column if not exists city text;
+alter table public.profiles add column if not exists email text;
+
+alter table public.stories add column if not exists author_id uuid references auth.users (id) on delete cascade;
+alter table public.stories add column if not exists title text;
+alter table public.stories add column if not exists body text;
+alter table public.stories add column if not exists burden text;
+alter table public.stories add column if not exists outcome text;
+alter table public.stories add column if not exists pvc_type text;
+alter table public.stories add column if not exists display_name text;
+alter table public.stories add column if not exists display_city text;
+alter table public.stories add column if not exists status text not null default 'pending';
+
+alter table public.story_replies add column if not exists parent_id uuid references public.story_replies (id) on delete cascade;
+alter table public.story_replies add column if not exists author_name text;
+
+alter table public.contact_messages add column if not exists subject text;
+
+alter table public.letter_requests add column if not exists note text;
+alter table public.letter_requests add column if not exists send_to_hrs boolean not null default true;
+alter table public.letter_requests add column if not exists send_to_acc boolean not null default true;
+alter table public.letter_requests add column if not exists send_to_aha boolean not null default true;
+
+-- Tell Supabase's API to pick up any new columns immediately
+-- (otherwise it can keep saying a column "does not exist").
+notify pgrst, 'reload schema';
