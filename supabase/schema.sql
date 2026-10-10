@@ -11,8 +11,12 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
   first_name text not null,
   city text not null,
+  email text,
   created_at timestamptz not null default now()
 );
+
+-- For projects created before the email column existed.
+alter table public.profiles add column if not exists email text;
 
 alter table public.profiles enable row level security;
 
@@ -36,12 +40,15 @@ language plpgsql
 security definer set search_path = public
 as $$
 begin
-  insert into public.profiles (id, first_name, city)
+  insert into public.profiles (id, first_name, city, email)
   values (
     new.id,
     coalesce(new.raw_user_meta_data ->> 'first_name', 'Friend'),
-    coalesce(new.raw_user_meta_data ->> 'city', 'your city')
-  );
+    coalesce(new.raw_user_meta_data ->> 'city', 'your city'),
+    new.email
+  )
+  on conflict (id) do update
+    set email = excluded.email;
   return new;
 end;
 $$;
@@ -50,6 +57,18 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
+
+-- One-time backfill: fill in email (and any missing profile row) for
+-- people who signed up before this trigger/column existed.
+insert into public.profiles (id, first_name, city, email)
+select
+  u.id,
+  coalesce(u.raw_user_meta_data ->> 'first_name', 'Friend'),
+  coalesce(u.raw_user_meta_data ->> 'city', 'your city'),
+  u.email
+from auth.users u
+on conflict (id) do update
+  set email = excluded.email;
 
 -- ============================================================
 -- STORIES — patient story submissions. display_name / display_city
