@@ -185,11 +185,11 @@ export default function ResourcesPage() {
               </p>
 
               <div className={styles.resList}>
-                <a className={styles.resLink} href="https://www.hopkinsmedicine.org/health/conditions-and-diseases/ventricular-tachycardia" target="_blank" rel="noopener">
+                <a className={styles.resLink} href="https://johnshopkinshealthcare.staywellsolutionsonline.com/Library/DiseasesConditions/Adult/134,571" target="_blank" rel="noopener">
                   <span className={styles.dot}></span>
                   <span className={styles.body}>
-                    <span className={styles.title}>Ventricular Tachycardia — Johns Hopkins Medicine</span>
-                    <span className={styles.domain}>hopkinsmedicine.org</span>
+                    <span className={styles.title}>Premature Ventricular Contractions — Johns Hopkins Medicine</span>
+                    <span className={styles.domain}>johnshopkinshealthcare.staywellsolutionsonline.com</span>
                   </span>
                 </a>
                 <a className={styles.resLink} href="https://www.mayoclinic.org/diseases-conditions/premature-ventricular-contractions/diagnosis-treatment/drc-20376762" target="_blank" rel="noopener">

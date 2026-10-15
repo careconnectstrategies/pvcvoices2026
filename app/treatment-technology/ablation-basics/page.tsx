@@ -186,13 +186,14 @@ export default function AblationBasicsPage() {
               <h2>Learn more</h2>
               <div className="rule" aria-hidden="true"></div>
               <p>
-                For a clinical overview of ventricular arrhythmias and
-                treatment options beyond what&apos;s covered here:
+                For a clinical overview of premature ventricular
+                contractions and treatment options beyond what&apos;s
+                covered here:
               </p>
 
               <a
                 className={styles.resLink}
-                href="https://www.hopkinsmedicine.org/health/conditions-and-diseases/ventricular-tachycardia"
+                href="https://johnshopkinshealthcare.staywellsolutionsonline.com/Library/DiseasesConditions/Adult/134,571"
                 target="_blank"
                 rel="noopener"
               >
@@ -200,8 +201,8 @@ export default function AblationBasicsPage() {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3E7CB1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
                 </span>
                 <span>
-                  <span className={styles.resTitle}>Ventricular Tachycardia — Johns Hopkins Medicine</span>
-                  <span className={styles.resDomain}>hopkinsmedicine.org</span>
+                  <span className={styles.resTitle}>Premature Ventricular Contractions — Johns Hopkins Medicine</span>
+                  <span className={styles.resDomain}>johnshopkinshealthcare.staywellsolutionsonline.com</span>
                 </span>
               </a>
             </section>
