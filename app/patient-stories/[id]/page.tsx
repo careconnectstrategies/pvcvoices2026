@@ -111,6 +111,8 @@ export default async function StoryDetailPage(props: PageProps<"/patient-stories
           </div>
         )}
 
+        <ReplyThread storyId={s.id} initialThread={thread} />
+
         <div className={styles.relatedCta}>
           <div>
             <h3>Have a story like this one?</h3>
@@ -123,8 +125,6 @@ export default async function StoryDetailPage(props: PageProps<"/patient-stories
             Share your story
           </Link>
         </div>
-
-        <ReplyThread storyId={s.id} initialThread={thread} />
       </div>
     </main>
   );

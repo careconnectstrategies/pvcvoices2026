@@ -154,7 +154,8 @@
   border: 1px solid var(--hairline);
   border-radius: 16px;
   padding: 22px 24px;
-  margin-bottom: 34px;
+  margin-top: 24px;
+  margin-bottom: 26px;
   box-shadow: 0 8px 20px rgba(20, 53, 95, 0.05);
 }
 .composerHead {
@@ -213,7 +214,8 @@
   border-radius: 16px;
   padding: 26px 24px;
   text-align: center;
-  margin-bottom: 34px;
+  margin-top: 24px;
+  margin-bottom: 26px;
 }
 .replyGate p {
   color: var(--slate);

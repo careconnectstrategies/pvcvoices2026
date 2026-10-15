@@ -133,27 +133,6 @@ export default function ReplyThread({
         </div>
       )}
 
-      <div className={styles.guidelines}>
-        <h4>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C77F14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          </svg>
-          Keep replies respectful
-        </h4>
-        <p>
-          This is a space for support, shared experience, and honest
-          questions — not debate or venting at each other. Please
-          don&apos;t post personal attacks, harassment, or negative
-          commentary about specific medical professionals. Disagree with
-          care; assume good faith.
-        </p>
-        <p>
-          PVC Voices reserves the right to remove any reply — or restrict
-          an account — that it deems inappropriate, at its sole
-          discretion, without prior notice.
-        </p>
-      </div>
-
       {!loading && !user && (
         <div className={styles.replyGate}>
           <p>Log in or create a free account to add a reply.</p>
@@ -182,6 +161,27 @@ export default function ReplyThread({
           </div>
         </div>
       )}
+      <div className={styles.guidelines}>
+        <h4>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C77F14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          Keep replies respectful
+        </h4>
+        <p>
+          This is a space for support, shared experience, and honest
+          questions — not debate or venting at each other. Please
+          don&apos;t post personal attacks, harassment, or negative
+          commentary about specific medical professionals. Disagree with
+          care; assume good faith.
+        </p>
+        <p>
+          PVC Voices reserves the right to remove any reply — or restrict
+          an account — that it deems inappropriate, at its sole
+          discretion, without prior notice.
+        </p>
+      </div>
+
     </section>
   );
 }
