@@ -37,9 +37,10 @@ npm run dev
 3. Open **SQL Editor → New query**, paste the contents of
    [`supabase/schema.sql`](supabase/schema.sql), and run it. This creates:
    - `profiles` — first name + city, auto-created on signup via a trigger
-   - `stories` — patient story submissions (starts as `status = 'pending'`;
-     flip a row to `'published'` in the Table Editor to make it public —
-     matches the site's "submissions are reviewed before publishing" policy)
+   - `stories` — patient story submissions (published immediately with
+     `status = 'published'`; the owner is emailed an alert, and can remove
+     any story in the Table Editor by deleting the row or setting
+     `status = 'rejected'` to hide it)
    - `story_replies` — threaded replies (self-referencing `parent_id`)
    - `contact_messages` — the general contact form
    - `letter_requests` — "Send a Letter on My Behalf" requests

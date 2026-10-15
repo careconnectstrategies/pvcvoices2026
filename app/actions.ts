@@ -1,7 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { sendStoryAlert } from "@/lib/notify";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -30,18 +32,44 @@ export async function submitStory(formData: FormData): Promise<ActionResult> {
   const body = String(formData.get("body") || "").trim();
   if (!title || !body) return { ok: false, error: "Please fill in a title and your story." };
 
-  const { error } = await supabase.from("stories").insert({
-    author_id: user.id,
-    title,
-    body,
-    burden: String(formData.get("burden") || "").trim() || null,
-    outcome: String(formData.get("outcome") || "").trim() || null,
-    pvc_type: String(formData.get("pvc_type") || "").trim() || null,
-    display_name,
-    display_city,
-  });
+  const burden = String(formData.get("burden") || "").trim() || null;
+  const outcome = String(formData.get("outcome") || "").trim() || null;
+  const pvc_type = String(formData.get("pvc_type") || "").trim() || null;
 
-  if (error) return { ok: false, error: error.message };
+  // Stories publish immediately; the site owner gets an email alert and can
+  // remove any story afterward in the Supabase Table Editor.
+  const { data: inserted, error } = await supabase
+    .from("stories")
+    .insert({
+      author_id: user.id,
+      title,
+      body,
+      burden,
+      outcome,
+      pvc_type,
+      display_name,
+      display_city,
+      status: "published",
+    })
+    .select("id")
+    .single();
+
+  if (error || !inserted) {
+    return { ok: false, error: error?.message ?? "Could not save your story." };
+  }
+
+  after(() =>
+    sendStoryAlert({
+      id: inserted.id,
+      title,
+      body,
+      burden,
+      outcome,
+      pvcType: pvc_type,
+      displayName: display_name,
+      displayCity: display_city,
+    })
+  );
 
   revalidatePath("/patient-stories");
   return { ok: true };

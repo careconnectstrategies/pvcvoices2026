@@ -226,14 +226,13 @@ export default function StorySubmitSection() {
                 {pending ? "Submitting…" : "Submit my story"}
               </button>
               <p className="form-note">
-                Submissions are reviewed before publishing, typically
-                within a few days. We may lightly edit for length or
-                clarity without changing your meaning.
+                Your story is published right away. We may remove any
+                story that doesn&apos;t follow our Terms of Use.
               </p>
               {state.ok === true && (
                 <p className="success-banner" style={{ marginTop: 16 }}>
-                  Thank you — your story was submitted and is pending
-                  review.
+                  Thank you — your story is now live on the Patient
+                  Stories page.
                 </p>
               )}
               {state.ok === false && (

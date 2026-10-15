@@ -60,9 +60,8 @@ export default async function PatientStoriesPage() {
                 <p>
                   <em>
                     No stories yet — be the first to share yours below.
-                    Submissions are moderated for the Terms of Use before
-                    publishing, and each poster controls whether their
-                    first name and city appear.
+                    Stories are published right away, and each poster
+                    controls whether their first name and city appear.
                   </em>
                 </p>
               </div>
@@ -83,7 +82,7 @@ export default async function PatientStoriesPage() {
                   </span>
                   {story.status !== "published" && story.author_id === user?.id && (
                     <span className={styles.date} style={{ color: "var(--rose-deep)" }}>
-                      Pending review — only visible to you
+                      Not public — only visible to you
                     </span>
                   )}
                 </div>

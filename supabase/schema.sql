@@ -86,7 +86,7 @@ create table if not exists public.stories (
   pvc_type text,
   display_name text,
   display_city text,
-  status text not null default 'pending' check (status in ('pending', 'published', 'rejected')),
+  status text not null default 'published' check (status in ('pending', 'published', 'rejected')),
   created_at timestamptz not null default now()
 );
 
@@ -195,7 +195,7 @@ alter table public.stories add column if not exists outcome text;
 alter table public.stories add column if not exists pvc_type text;
 alter table public.stories add column if not exists display_name text;
 alter table public.stories add column if not exists display_city text;
-alter table public.stories add column if not exists status text not null default 'pending';
+alter table public.stories add column if not exists status text not null default 'published';
 
 alter table public.story_replies add column if not exists parent_id uuid references public.story_replies (id) on delete cascade;
 alter table public.story_replies add column if not exists author_name text;
