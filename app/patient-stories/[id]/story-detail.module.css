@@ -83,7 +83,7 @@
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-  margin: 44px 0 8px;
+  margin: 0 0 32px;
 }
 .relatedCta h3 {
   font-family: var(--font-fraunces);
@@ -127,7 +127,7 @@
   border: 1px solid #f3dbb4;
   border-radius: 14px;
   padding: 18px 22px;
-  margin-bottom: 26px;
+  margin-bottom: 32px;
   font-size: 0.88rem;
   color: var(--slate);
 }
@@ -155,7 +155,7 @@
   border-radius: 16px;
   padding: 22px 24px;
   margin-top: 24px;
-  margin-bottom: 26px;
+  margin-bottom: 32px;
   box-shadow: 0 8px 20px rgba(20, 53, 95, 0.05);
 }
 .composerHead {
@@ -215,7 +215,7 @@
   padding: 26px 24px;
   text-align: center;
   margin-top: 24px;
-  margin-bottom: 26px;
+  margin-bottom: 32px;
 }
 .replyGate p {
   color: var(--slate);
