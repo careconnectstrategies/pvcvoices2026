@@ -56,6 +56,11 @@ npm run dev
 Moderation for stories/replies/contact/letter requests happens in the
 Supabase **Table Editor** — there's no admin UI in the app itself.
 
+Members can delete their own stories and replies from the site. Anyone can
+click **Report inappropriate content** on a story or reply: it's logged in
+the `content_reports` table and emailed to the owner (no auto-hide). To
+remove reported content, delete the row in `stories` or `story_replies`.
+
 ## 3. Deploy: GitHub → Vercel
 
 1. Push this project to a new GitHub repository.

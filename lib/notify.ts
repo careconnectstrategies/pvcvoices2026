@@ -11,6 +11,16 @@ type StoryAlert = {
   displayCity: string | null;
 };
 
+type ReportAlert = {
+  id: string;
+  contentType: "story" | "reply";
+  contentId: string;
+  storyId: string;
+  storyTitle: string;
+  contentText: string;
+  reporterLoggedIn: boolean;
+};
+
 type ReplyAlert = {
   id: string;
   storyId: string;
@@ -154,6 +164,47 @@ export async function sendReplyAlert(reply: ReplyAlert): Promise<void> {
 
   await sendOwnerEmail({
     subject: `New PVC Voices reply on: ${reply.storyTitle}`,
+    html,
+    text,
+  });
+}
+
+/** Emails the site owner when a visitor reports content as inappropriate. */
+export async function sendReportAlert(r: ReportAlert): Promise<void> {
+  const url = `${getSiteUrl()}/patient-stories/${r.storyId}`;
+  const what = r.contentType === "story" ? "story" : "reply";
+  const table = r.contentType === "story" ? "stories" : "story_replies";
+  const who = r.reporterLoggedIn ? "a logged-in member" : "a visitor who was not logged in";
+
+  const text = [
+    `A ${what} was reported as inappropriate by ${who}.`,
+    ``,
+    `Story: ${r.storyTitle}`,
+    ``,
+    `Reported ${what}:`,
+    r.contentText,
+    ``,
+    `View it: ${url}`,
+    `To remove it: Supabase → Table Editor → ${table} → find ${what} ${r.contentId} → delete the row.`,
+    `Report log: Supabase → Table Editor → content_reports (report ${r.id}).`,
+  ].join("\n");
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;max-width:620px;color:#22303F">
+      <p style="color:#41546A">A <strong>${esc(what)}</strong> was <strong>reported as inappropriate</strong> by ${esc(who)}.</p>
+      <p style="margin:0 0 12px"><strong>Story:</strong> ${esc(r.storyTitle)}</p>
+      <p style="margin:0 0 4px"><strong>Reported ${esc(what)}:</strong></p>
+      <div style="white-space:pre-wrap;background:#FCEEDC;border-radius:8px;padding:14px 16px">${esc(r.contentText)}</div>
+      <p><a href="${esc(url)}" style="color:#CE4B59;font-weight:bold">View it →</a></p>
+      <p style="font-size:13px;color:#41546A">
+        To remove it: Supabase → Table Editor → <em>${esc(table)}</em> → find ${esc(what)}
+        <code>${esc(r.contentId)}</code> → delete the row.<br>
+        Report log: <em>content_reports</em> (report <code>${esc(r.id)}</code>).
+      </p>
+    </div>`;
+
+  await sendOwnerEmail({
+    subject: `Reported on PVC Voices: ${r.storyTitle}`,
     html,
     text,
   });

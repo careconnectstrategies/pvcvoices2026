@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "./AuthProvider";
-import { submitReply } from "@/app/actions";
+import { deleteReply, submitReply } from "@/app/actions";
+import ReportButton from "./ReportButton";
 import type { ReplyNode } from "@/lib/types";
 import styles from "@/app/patient-stories/[id]/story-detail.module.css";
 
@@ -29,6 +30,21 @@ function CommentNode({ node, storyId }: { node: ReplyNode; storyId: string }) {
   const [replying, setReplying] = useState(false);
   const [text, setText] = useState("");
   const [pending, setPending] = useState(false);
+
+  const [deleting, setDeleting] = useState(false);
+
+  async function removeReply() {
+    const nested = countAll(node.children);
+    const warning =
+      nested > 0
+        ? `Delete your reply permanently? This also deletes the ${nested} ${nested === 1 ? "reply" : "replies"} under it, and it can't be undone.`
+        : "Delete your reply permanently? This can't be undone.";
+    if (!window.confirm(warning)) return;
+    setDeleting(true);
+    const result = await deleteReply(storyId, node.id);
+    setDeleting(false);
+    if (result.ok) router.refresh();
+  }
 
   async function post() {
     if (!text.trim() || !user) return;
@@ -60,6 +76,16 @@ function CommentNode({ node, storyId }: { node: ReplyNode; storyId: string }) {
           >
             Reply
           </button>
+          {user?.id === node.author_id && (
+            <button
+              className={styles.dangerLink}
+              onClick={removeReply}
+              disabled={deleting}
+            >
+              {deleting ? "Deleting…" : "Delete"}
+            </button>
+          )}
+          <ReportButton contentType="reply" contentId={node.id} />
         </div>
 
         {replying && (

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ReplyThread from "@/components/ReplyThread";
+import ReportButton from "@/components/ReportButton";
+import DeleteStoryButton from "@/components/DeleteStoryButton";
 import { createClient } from "@/lib/supabase/server";
 import { nestReplies, pvcTypeLabel, type Story, type StoryReply } from "@/lib/types";
 import styles from "./story-detail.module.css";
@@ -110,6 +112,11 @@ export default async function StoryDetailPage(props: PageProps<"/patient-stories
             </div>
           </div>
         )}
+
+        <div className={styles.storyActions}>
+          <ReportButton contentType="story" contentId={s.id} />
+          <DeleteStoryButton storyId={s.id} authorId={s.author_id} />
+        </div>
 
         <ReplyThread storyId={s.id} initialThread={thread} />
 

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { sendReplyAlert, sendStoryAlert } from "@/lib/notify";
+import { sendReplyAlert, sendReportAlert, sendStoryAlert } from "@/lib/notify";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -192,5 +192,121 @@ export async function submitLetterRequest(formData: FormData): Promise<ActionRes
   });
 
   if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+export async function deleteStory(storyId: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: "You must be logged in." };
+
+  const { data, error } = await supabase
+    .from("stories")
+    .delete()
+    .eq("id", storyId)
+    .eq("author_id", user.id)
+    .select("id");
+
+  if (error) return { ok: false, error: error.message };
+  if (!data || data.length === 0) {
+    return { ok: false, error: "That story couldn't be found, or it isn't yours to delete." };
+  }
+
+  revalidatePath("/patient-stories");
+  return { ok: true };
+}
+
+export async function deleteReply(storyId: string, replyId: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: "You must be logged in." };
+
+  const { data, error } = await supabase
+    .from("story_replies")
+    .delete()
+    .eq("id", replyId)
+    .eq("author_id", user.id)
+    .select("id");
+
+  if (error) return { ok: false, error: error.message };
+  if (!data || data.length === 0) {
+    return { ok: false, error: "That reply couldn't be found, or it isn't yours to delete." };
+  }
+
+  revalidatePath(`/patient-stories/${storyId}`);
+  return { ok: true };
+}
+
+/**
+ * "Report inappropriate content" — open to everyone (no login needed).
+ * Logs the report and emails the site owner. No free-text from the reporter.
+ */
+export async function reportContent(
+  contentType: "story" | "reply",
+  contentId: string
+): Promise<ActionResult> {
+  if (contentType !== "story" && contentType !== "reply") {
+    return { ok: false, error: "Unknown content type." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let storyId = contentId;
+  let contentText = "";
+
+  if (contentType === "story") {
+    const { data: story } = await supabase
+      .from("stories")
+      .select("body")
+      .eq("id", contentId)
+      .single();
+    if (!story) return { ok: false, error: "That story could not be found." };
+    contentText = story.body;
+  } else {
+    const { data: reply } = await supabase
+      .from("story_replies")
+      .select("story_id, body")
+      .eq("id", contentId)
+      .single();
+    if (!reply) return { ok: false, error: "That reply could not be found." };
+    storyId = reply.story_id;
+    contentText = reply.body;
+  }
+
+  const { data: parent } = await supabase
+    .from("stories")
+    .select("title")
+    .eq("id", storyId)
+    .single();
+
+  const reportId = crypto.randomUUID();
+  const { error } = await supabase.from("content_reports").insert({
+    id: reportId,
+    content_type: contentType,
+    content_id: contentId,
+    story_id: storyId,
+    reporter_id: user?.id ?? null,
+  });
+  if (error) return { ok: false, error: error.message };
+
+  after(() =>
+    sendReportAlert({
+      id: reportId,
+      contentType,
+      contentId,
+      storyId,
+      storyTitle: parent?.title ?? "(untitled story)",
+      contentText,
+      reporterLoggedIn: !!user,
+    })
+  );
+
   return { ok: true };
 }
