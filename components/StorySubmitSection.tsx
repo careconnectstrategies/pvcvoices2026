@@ -231,8 +231,11 @@ export default function StorySubmitSection() {
               </p>
               {state.ok === true && (
                 <p className="success-banner" style={{ marginTop: 16 }}>
-                  Thank you — your story is now live on the Patient
-                  Stories page.
+                  Thank you — your story is now live on the{" "}
+                  <Link href="/patient-stories" style={{ color: "inherit", fontWeight: 800, textDecoration: "underline" }}>
+                    Patient Stories
+                  </Link>{" "}
+                  page.
                 </p>
               )}
               {state.ok === false && (
