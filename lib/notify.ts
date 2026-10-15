@@ -11,6 +11,15 @@ type StoryAlert = {
   displayCity: string | null;
 };
 
+type ReplyAlert = {
+  id: string;
+  storyId: string;
+  storyTitle: string;
+  authorName: string;
+  body: string;
+  isNested: boolean;
+};
+
 function esc(s: string) {
   return s
     .replace(/&/g, "&amp;")
@@ -20,27 +29,54 @@ function esc(s: string) {
 }
 
 /**
- * Emails the site owner when a story is published.
- * Uses Resend's REST API. Never throws: a failed alert must not break
- * story submission. If the env vars aren't set, it quietly does nothing.
+ * Sends one alert email to the site owner(s) via Resend's REST API.
+ * Never throws: a failed alert must not break story or reply submission.
+ * If the env vars aren't set, it quietly does nothing.
  *
  * Env vars (set in Vercel):
  *   RESEND_API_KEY      — from resend.com
  *   STORY_ALERT_EMAIL   — where alerts go (comma-separate for several)
- *   RESEND_FROM         — optional, e.g. "PVC Voices <alerts@pvcvoices.org>"
+ *   RESEND_FROM         — optional, e.g. "PVC Voices <alerts@mail.pvcvoices.org>"
  *                         (needs a domain verified in Resend; defaults to
  *                         Resend's test sender, which only delivers to the
  *                         email on your Resend account)
  */
-export async function sendStoryAlert(story: StoryAlert): Promise<void> {
+async function sendOwnerEmail(email: {
+  subject: string;
+  text: string;
+  html: string;
+}): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.STORY_ALERT_EMAIL;
   if (!apiKey || !to) {
-    console.warn("Story alert skipped: RESEND_API_KEY or STORY_ALERT_EMAIL not set.");
+    console.warn("Alert skipped: RESEND_API_KEY or STORY_ALERT_EMAIL not set.");
     return;
   }
-
   const from = process.env.RESEND_FROM || "PVC Voices <onboarding@resend.dev>";
+
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to: to.split(",").map((s) => s.trim()).filter(Boolean),
+        ...email,
+      }),
+    });
+    if (!res.ok) {
+      console.error("Alert failed:", res.status, await res.text());
+    }
+  } catch (err) {
+    console.error("Alert error:", err);
+  }
+}
+
+/** Emails the site owner when a story is published. */
+export async function sendStoryAlert(story: StoryAlert): Promise<void> {
   const url = `${getSiteUrl()}/patient-stories/${story.id}`;
   const byline = [story.displayName, story.displayCity].filter(Boolean).join(", ");
 
@@ -79,25 +115,46 @@ export async function sendStoryAlert(story: StoryAlert): Promise<void> {
       </p>
     </div>`;
 
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from,
-        to: to.split(",").map((s) => s.trim()).filter(Boolean),
-        subject: `New PVC Voices story: ${story.title}`,
-        html,
-        text,
-      }),
-    });
-    if (!res.ok) {
-      console.error("Story alert failed:", res.status, await res.text());
-    }
-  } catch (err) {
-    console.error("Story alert error:", err);
-  }
+  await sendOwnerEmail({
+    subject: `New PVC Voices story: ${story.title}`,
+    html,
+    text,
+  });
+}
+
+/** Emails the site owner when a reply is posted. */
+export async function sendReplyAlert(reply: ReplyAlert): Promise<void> {
+  const url = `${getSiteUrl()}/patient-stories/${reply.storyId}`;
+  const kind = reply.isNested ? "reply to a reply" : "reply";
+
+  const text = [
+    `A new ${kind} was just posted on PVC Voices.`,
+    ``,
+    `Story: ${reply.storyTitle}`,
+    `From: ${reply.authorName}`,
+    ``,
+    reply.body,
+    ``,
+    `View it: ${url}`,
+    `To remove it: Supabase → Table Editor → story_replies → find reply ${reply.id} → delete the row.`,
+  ].join("\n");
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;max-width:620px;color:#22303F">
+      <p style="color:#41546A">A new <strong>${esc(kind)}</strong> was just posted on PVC Voices.</p>
+      <p style="margin:0 0 4px"><strong>Story:</strong> ${esc(reply.storyTitle)}</p>
+      <p style="margin:0 0 12px"><strong>From:</strong> ${esc(reply.authorName)}</p>
+      <div style="white-space:pre-wrap;background:#EAF2F9;border-radius:8px;padding:14px 16px">${esc(reply.body)}</div>
+      <p><a href="${esc(url)}" style="color:#CE4B59;font-weight:bold">View the story →</a></p>
+      <p style="font-size:13px;color:#41546A">
+        To remove it: Supabase → Table Editor → <em>story_replies</em> → find reply
+        <code>${esc(reply.id)}</code> → delete the row.
+      </p>
+    </div>`;
+
+  await sendOwnerEmail({
+    subject: `New PVC Voices reply on: ${reply.storyTitle}`,
+    html,
+    text,
+  });
 }

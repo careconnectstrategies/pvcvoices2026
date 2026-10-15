@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { sendStoryAlert } from "@/lib/notify";
+import { sendReplyAlert, sendStoryAlert } from "@/lib/notify";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -95,15 +95,40 @@ export async function submitReply(
     .eq("id", user.id)
     .single();
 
-  const { error } = await supabase.from("story_replies").insert({
-    story_id: storyId,
-    parent_id: parentId,
-    author_id: user.id,
-    author_name: profile?.first_name || "Friend",
-    body: trimmed,
-  });
+  const authorName = profile?.first_name || "Friend";
+  const { data: inserted, error } = await supabase
+    .from("story_replies")
+    .insert({
+      story_id: storyId,
+      parent_id: parentId,
+      author_id: user.id,
+      author_name: authorName,
+      body: trimmed,
+    })
+    .select("id")
+    .single();
 
-  if (error) return { ok: false, error: error.message };
+  if (error || !inserted) {
+    return { ok: false, error: error?.message ?? "Could not save your reply." };
+  }
+
+  // Look up the story title for the owner's alert email (non-blocking).
+  const { data: story } = await supabase
+    .from("stories")
+    .select("title")
+    .eq("id", storyId)
+    .single();
+
+  after(() =>
+    sendReplyAlert({
+      id: inserted.id,
+      storyId,
+      storyTitle: story?.title ?? "(untitled story)",
+      authorName,
+      body: trimmed,
+      isNested: parentId !== null,
+    })
+  );
 
   revalidatePath(`/patient-stories/${storyId}`);
   return { ok: true };
