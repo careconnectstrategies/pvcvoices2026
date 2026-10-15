@@ -5,6 +5,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { getSiteUrl } from "@/lib/site";
+import { Analytics } from "@vercel/analytics/next";
 
 const nunitoSans = Nunito_Sans({
   variable: "--font-nunito-sans",
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
           <Footer />
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
