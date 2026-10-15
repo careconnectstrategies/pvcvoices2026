@@ -231,11 +231,17 @@ export default function StorySubmitSection() {
               </p>
               {state.ok === true && (
                 <p className="success-banner" style={{ marginTop: 16 }}>
-                  Thank you — your story is now live on the{" "}
-                  <Link href="/patient-stories" style={{ color: "inherit", fontWeight: 800, textDecoration: "underline" }}>
-                    Patient Stories
-                  </Link>{" "}
-                  page.
+                  <span>
+                    Thank you — your story is now live on the{" "}
+                    {/* Plain link (full page load) so the new story shows up in the list */}
+                    <a
+                      href="/patient-stories"
+                      style={{ color: "inherit", fontWeight: 800, textDecoration: "underline" }}
+                    >
+                      Patient Stories page
+                    </a>
+                    .
+                  </span>
                 </p>
               )}
               {state.ok === false && (
