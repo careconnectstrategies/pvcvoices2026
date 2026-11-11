@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { sendContactAlert, sendLetterRequestAlert, sendReplyAlert, sendReportAlert, sendStoryAlert } from "@/lib/notify";
+import { sendContactAlert, sendLetterRequestAlert, sendNewsletterAlert, sendReplyAlert, sendReportAlert, sendStoryAlert } from "@/lib/notify";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -147,6 +147,8 @@ export async function subscribeNewsletter(formData: FormData): Promise<ActionRes
   });
 
   if (error) return { ok: false, error: error.message };
+
+  after(() => sendNewsletterAlert(email));
   return { ok: true };
 }
 

@@ -52,7 +52,8 @@ function esc(s: string) {
  *
  * Env vars (set in Vercel):
  *   RESEND_API_KEY      — from resend.com
- *   STORY_ALERT_EMAIL   — where alerts go (comma-separate for several)
+ *   ALERT_EMAIL         — where alerts go (comma-separate for several).
+ *                         The older name STORY_ALERT_EMAIL still works as a fallback.
  *   RESEND_FROM         — optional, e.g. "PVC Voices <alerts@mail.pvcvoices.org>"
  *                         (needs a domain verified in Resend; defaults to
  *                         Resend's test sender, which only delivers to the
@@ -65,9 +66,9 @@ async function sendOwnerEmail(email: {
   replyTo?: string;
 }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.STORY_ALERT_EMAIL;
+  const to = process.env.ALERT_EMAIL || process.env.STORY_ALERT_EMAIL;
   if (!apiKey || !to) {
-    console.warn("Alert skipped: RESEND_API_KEY or STORY_ALERT_EMAIL not set.");
+    console.warn("Alert skipped: RESEND_API_KEY or ALERT_EMAIL not set.");
     return;
   }
   const from = process.env.RESEND_FROM || "PVC Voices <onboarding@resend.dev>";
@@ -348,4 +349,21 @@ export async function sendLetterRequestAlert(r: LetterRequestAlert): Promise<voi
     html,
     text,
   });
+}
+
+/** Emails the site owner when someone signs up for the newsletter. */
+export async function sendNewsletterAlert(email: string): Promise<void> {
+  const text = [
+    `New newsletter signup on PVC Voices.`,
+    ``,
+    `Email: ${email}`,
+  ].join("\n");
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;max-width:620px;color:#22303F">
+      <p style="color:#41546A">New <strong>newsletter signup</strong> on PVC Voices.</p>
+      <p style="margin:0"><strong>Email:</strong> <a href="mailto:${esc(email)}" style="color:#3E7CB1">${esc(email)}</a></p>
+    </div>`;
+
+  await sendOwnerEmail({ subject: `PVC Voices newsletter signup: ${email}`, html, text });
 }
