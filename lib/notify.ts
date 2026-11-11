@@ -267,6 +267,8 @@ type LetterRequestAlert = {
   aha: boolean;
 };
 
+const LETTER_FROM = "support@pvcvoices.org";
+
 const LETTER_RECIPIENTS = {
   aha: { label: "American Heart Association (AHA)", email: "inquiries@heart.org" },
   hrs: { label: "Heart Rhythm Society (HRS)", email: "info@hrsonline.org" },
@@ -290,27 +292,32 @@ export async function sendLetterRequestAlert(r: LetterRequestAlert): Promise<voi
   const letter = [
     `Dear Colleagues,`,
     ``,
-    `My name is ${r.fullName}, and I am a patient living in ${r.city} with premature ventricular contractions (PVCs). I am writing to ask that your organization consider how PVCs are evaluated, discussed, and treated, and in particular that symptom burden carry as much weight as PVC count.`,
+    `I'm sending this email on behalf of:`,
+    r.fullName,
+    `who has given PVC Voices permission to send it, and who is copied on this email at ${r.email}.`,
+    ``,
+    ...(r.note ? [`They have added the following comments:`, r.note, ``] : []),
+    `We are both asking that you consider how premature ventricular contractions (PVCs) are evaluated, discussed, and treated, and in particular that symptom burden carry as much weight as PVC count.`,
     ``,
     `Too often, a patient with a "low" PVC burden is told that nothing needs to be done. But low burden does not mean low suffering. Many people with relatively few PVCs live with palpitations, fatigue, chest discomfort, anxiety, and limits on work, exercise, and family life. How a patient feels should be part of the conversation about care, not an afterthought to a percentage on a monitor.`,
     ``,
-    `I respectfully ask that you:`,
+    `We respectfully ask that you:`,
     `  1. Recognize symptom burden as a legitimate basis for evaluation and treatment, alongside PVC count.`,
     `  2. Reflect this in your clinical guidance, patient education, and professional training.`,
     `  3. Make sure patients are heard, and that effective treatment options, including ablation where appropriate, are discussed with them.`,
     ``,
-    ...(r.note ? [`In my own words:`, r.note, ``] : []),
-    `Thank you for your time and for the work you do on behalf of heart rhythm patients. I would welcome a response.`,
+    `Thank you for your time and for your work on behalf of heart rhythm patients. We would welcome a response.`,
     ``,
-    `Sincerely,`,
-    r.fullName,
-    r.city,
-    r.email,
+    `Signed,`,
+    `Raymond Dettinger`,
+    `PVC Voices Advocate`,
+    `Email: ${LETTER_FROM}`,
   ].join("\n");
 
   const text = [
     `NEW LETTER REQUEST — ready to send`,
     ``,
+    `FROM: ${LETTER_FROM}`,
     `TO: ${toLine}`,
     `CC: ${r.email}`,
     `Organizations selected: ${orgList}`,
@@ -326,6 +333,7 @@ export async function sendLetterRequestAlert(r: LetterRequestAlert): Promise<voi
     <div style="font-family:Arial,sans-serif;max-width:640px;color:#22303F">
       <p style="color:#41546A;margin:0 0 12px">New <strong>letter request</strong> — ready to send.</p>
       <div style="background:#EAF2F9;border-radius:8px;padding:14px 16px;margin-bottom:16px">
+        <p style="margin:0 0 6px"><strong>FROM:</strong> ${esc(LETTER_FROM)}</p>
         <p style="margin:0 0 6px"><strong>TO:</strong> ${esc(toLine)}</p>
         <p style="margin:0 0 6px"><strong>CC:</strong> ${esc(r.email)}</p>
         <p style="margin:0"><strong>Organizations selected:</strong> ${esc(orgList)}</p>
