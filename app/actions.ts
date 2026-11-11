@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { sendContactAlert, sendReplyAlert, sendReportAlert, sendStoryAlert } from "@/lib/notify";
+import { sendContactAlert, sendLetterRequestAlert, sendReplyAlert, sendReportAlert, sendStoryAlert } from "@/lib/notify";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -183,17 +183,24 @@ export async function submitLetterRequest(formData: FormData): Promise<ActionRes
     return { ok: false, error: "Please fill in your name, email, and city." };
   }
 
+  const note = String(formData.get("note") || "").trim() || null;
+  const hrs = formData.get("send_to_hrs") === "on";
+  const acc = formData.get("send_to_acc") === "on";
+  const aha = formData.get("send_to_aha") === "on";
+
   const { error } = await supabase.from("letter_requests").insert({
     full_name,
     email,
     city,
-    note: String(formData.get("note") || "").trim() || null,
-    send_to_hrs: formData.get("send_to_hrs") === "on",
-    send_to_acc: formData.get("send_to_acc") === "on",
-    send_to_aha: formData.get("send_to_aha") === "on",
+    note,
+    send_to_hrs: hrs,
+    send_to_acc: acc,
+    send_to_aha: aha,
   });
 
   if (error) return { ok: false, error: error.message };
+
+  after(() => sendLetterRequestAlert({ fullName: full_name, email, city, note, hrs, acc, aha }));
   return { ok: true };
 }
 

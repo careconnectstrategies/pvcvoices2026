@@ -256,3 +256,88 @@ export async function sendContactAlert(c: ContactAlert): Promise<void> {
     replyTo: c.email,
   });
 }
+
+type LetterRequestAlert = {
+  fullName: string;
+  email: string;
+  city: string;
+  note: string | null;
+  hrs: boolean;
+  acc: boolean;
+  aha: boolean;
+};
+
+const LETTER_RECIPIENTS = {
+  aha: { label: "American Heart Association (AHA)", email: "inquiries@heart.org" },
+  hrs: { label: "Heart Rhythm Society (HRS)", email: "info@hrsonline.org" },
+  acc: { label: "American College of Cardiology (ACC)", email: "membercare@my.acc.org" },
+} as const;
+
+/**
+ * Emails the site owner a ready-to-send letter for a letter request:
+ * recipient addresses and the requester's email (for CC) at the top,
+ * then the subject and letter body filled in from the form.
+ */
+export async function sendLetterRequestAlert(r: LetterRequestAlert): Promise<void> {
+  const chosen = (["hrs", "acc", "aha"] as const)
+    .filter((k) => r[k])
+    .map((k) => LETTER_RECIPIENTS[k]);
+
+  const toLine = chosen.map((c) => c.email).join(", ") || "(no organization selected)";
+  const orgList = chosen.map((c) => c.label).join("; ") || "(none selected)";
+  const subject = "PVC-related Consumer Request";
+
+  const letter = [
+    `Dear Colleagues,`,
+    ``,
+    `My name is ${r.fullName}, and I am a patient living in ${r.city} with premature ventricular contractions (PVCs). I am writing to ask that your organization consider how PVCs are evaluated, discussed, and treated, and in particular that symptom burden carry as much weight as PVC count.`,
+    ``,
+    `Too often, a patient with a "low" PVC burden is told that nothing needs to be done. But low burden does not mean low suffering. Many people with relatively few PVCs live with palpitations, fatigue, chest discomfort, anxiety, and limits on work, exercise, and family life. How a patient feels should be part of the conversation about care, not an afterthought to a percentage on a monitor.`,
+    ``,
+    `I respectfully ask that you:`,
+    `  1. Recognize symptom burden as a legitimate basis for evaluation and treatment, alongside PVC count.`,
+    `  2. Reflect this in your clinical guidance, patient education, and professional training.`,
+    `  3. Make sure patients are heard, and that effective treatment options, including ablation where appropriate, are discussed with them.`,
+    ``,
+    ...(r.note ? [`In my own words:`, r.note, ``] : []),
+    `Thank you for your time and for the work you do on behalf of heart rhythm patients. I would welcome a response.`,
+    ``,
+    `Sincerely,`,
+    r.fullName,
+    r.city,
+    r.email,
+  ].join("\n");
+
+  const text = [
+    `NEW LETTER REQUEST — ready to send`,
+    ``,
+    `TO: ${toLine}`,
+    `CC: ${r.email}`,
+    `Organizations selected: ${orgList}`,
+    ``,
+    `SUBJECT: ${subject}`,
+    ``,
+    `----- copy from here -----`,
+    letter,
+    `----- end of letter -----`,
+  ].join("\n");
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;max-width:640px;color:#22303F">
+      <p style="color:#41546A;margin:0 0 12px">New <strong>letter request</strong> — ready to send.</p>
+      <div style="background:#EAF2F9;border-radius:8px;padding:14px 16px;margin-bottom:16px">
+        <p style="margin:0 0 6px"><strong>TO:</strong> ${esc(toLine)}</p>
+        <p style="margin:0 0 6px"><strong>CC:</strong> ${esc(r.email)}</p>
+        <p style="margin:0"><strong>Organizations selected:</strong> ${esc(orgList)}</p>
+      </div>
+      <p style="margin:0 0 4px"><strong>SUBJECT:</strong> ${esc(subject)}</p>
+      <div style="white-space:pre-wrap;border:1px solid #D5E3F0;border-radius:8px;padding:16px 18px;line-height:1.55">${esc(letter)}</div>
+      <p style="font-size:13px;color:#41546A">Copy the letter into a new email, add the CC address above, and send.</p>
+    </div>`;
+
+  await sendOwnerEmail({
+    subject: `Letter request: ${r.fullName} (${r.city})`,
+    html,
+    text,
+  });
+}
