@@ -30,6 +30,13 @@ type ReplyAlert = {
   isNested: boolean;
 };
 
+type ContactAlert = {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+};
+
 function esc(s: string) {
   return s
     .replace(/&/g, "&amp;")
@@ -55,6 +62,7 @@ async function sendOwnerEmail(email: {
   subject: string;
   text: string;
   html: string;
+  replyTo?: string;
 }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.STORY_ALERT_EMAIL;
@@ -74,7 +82,10 @@ async function sendOwnerEmail(email: {
       body: JSON.stringify({
         from,
         to: to.split(",").map((s) => s.trim()).filter(Boolean),
-        ...email,
+        subject: email.subject,
+        text: email.text,
+        html: email.html,
+        ...(email.replyTo ? { reply_to: email.replyTo } : {}),
       }),
     });
     if (!res.ok) {
@@ -207,5 +218,41 @@ export async function sendReportAlert(r: ReportAlert): Promise<void> {
     subject: `Reported on PVC Voices: ${r.storyTitle}`,
     html,
     text,
+  });
+}
+
+/** Emails the site owner when someone submits the contact form. */
+export async function sendContactAlert(c: ContactAlert): Promise<void> {
+  const subject = c.subject || "(none)";
+
+  const text = [
+    `New contact form message on PVC Voices.`,
+    ``,
+    `Name: ${c.name}`,
+    `Email: ${c.email}`,
+    `Subject: ${subject}`,
+    ``,
+    `Message:`,
+    c.message,
+    ``,
+    `Reply directly to this email to respond to ${c.name}.`,
+  ].join("\n");
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;max-width:620px;color:#22303F">
+      <p style="color:#41546A">New <strong>contact form</strong> message on PVC Voices.</p>
+      <p style="margin:0 0 4px"><strong>Name:</strong> ${esc(c.name)}</p>
+      <p style="margin:0 0 4px"><strong>Email:</strong> <a href="mailto:${esc(c.email)}" style="color:#3E7CB1">${esc(c.email)}</a></p>
+      <p style="margin:0 0 12px"><strong>Subject:</strong> ${esc(subject)}</p>
+      <p style="margin:0 0 4px"><strong>Message:</strong></p>
+      <div style="white-space:pre-wrap;background:#EAF2F9;border-radius:8px;padding:14px 16px">${esc(c.message)}</div>
+      <p style="font-size:13px;color:#41546A">Reply directly to this email to respond to ${esc(c.name)}.</p>
+    </div>`;
+
+  await sendOwnerEmail({
+    subject: `PVC Voices contact: ${subject} — ${c.name}`,
+    html,
+    text,
+    replyTo: c.email,
   });
 }

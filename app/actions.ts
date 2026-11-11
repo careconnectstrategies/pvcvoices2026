@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { sendReplyAlert, sendReportAlert, sendStoryAlert } from "@/lib/notify";
+import { sendContactAlert, sendReplyAlert, sendReportAlert, sendStoryAlert } from "@/lib/notify";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -167,6 +167,8 @@ export async function submitContactMessage(formData: FormData): Promise<ActionRe
     .insert({ name, email, subject, message });
 
   if (error) return { ok: false, error: error.message };
+
+  after(() => sendContactAlert({ name, email, subject, message }));
   return { ok: true };
 }
 
