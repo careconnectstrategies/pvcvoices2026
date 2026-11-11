@@ -118,7 +118,7 @@ export async function sendStoryAlert(story: StoryAlert): Promise<void> {
     story.body,
     ``,
     `View it: ${url}`,
-    `To remove it: Supabase → Table Editor → stories → find story ${story.id} → delete the row (or set status to "rejected" to hide it).`,
+    `To remove it: log in as admin, open the story above, and click "Remove story (admin)".`,
   ].join("\n");
 
   const html = `
@@ -131,9 +131,8 @@ export async function sendStoryAlert(story: StoryAlert): Promise<void> {
       <div style="white-space:pre-wrap;background:#EAF2F9;border-radius:8px;padding:14px 16px">${esc(story.body)}</div>
       <p><a href="${esc(url)}" style="color:#CE4B59;font-weight:bold">View the story →</a></p>
       <p style="font-size:13px;color:#41546A">
-        To remove it: Supabase → Table Editor → <em>stories</em> → find story
-        <code>${esc(story.id)}</code> → delete the row (or set <code>status</code>
-        to <code>rejected</code> to hide it).
+        To remove it: log in as admin, open the story, and click
+        <strong>Remove story (admin)</strong>.
       </p>
     </div>`;
 
@@ -158,7 +157,7 @@ export async function sendReplyAlert(reply: ReplyAlert): Promise<void> {
     reply.body,
     ``,
     `View it: ${url}`,
-    `To remove it: Supabase → Table Editor → story_replies → find reply ${reply.id} → delete the row.`,
+    `To remove it: log in as admin, open the story above, and click "Remove (admin)" under the reply.`,
   ].join("\n");
 
   const html = `
@@ -169,8 +168,8 @@ export async function sendReplyAlert(reply: ReplyAlert): Promise<void> {
       <div style="white-space:pre-wrap;background:#EAF2F9;border-radius:8px;padding:14px 16px">${esc(reply.body)}</div>
       <p><a href="${esc(url)}" style="color:#CE4B59;font-weight:bold">View the story →</a></p>
       <p style="font-size:13px;color:#41546A">
-        To remove it: Supabase → Table Editor → <em>story_replies</em> → find reply
-        <code>${esc(reply.id)}</code> → delete the row.
+        To remove it: log in as admin, open the story, and click
+        <strong>Remove (admin)</strong> under the reply.
       </p>
     </div>`;
 
@@ -185,7 +184,6 @@ export async function sendReplyAlert(reply: ReplyAlert): Promise<void> {
 export async function sendReportAlert(r: ReportAlert): Promise<void> {
   const url = `${getSiteUrl()}/patient-stories/${r.storyId}`;
   const what = r.contentType === "story" ? "story" : "reply";
-  const table = r.contentType === "story" ? "stories" : "story_replies";
   const who = r.reporterLoggedIn ? "a logged-in member" : "a visitor who was not logged in";
 
   const text = [
@@ -197,8 +195,8 @@ export async function sendReportAlert(r: ReportAlert): Promise<void> {
     r.contentText,
     ``,
     `View it: ${url}`,
-    `To remove it: Supabase → Table Editor → ${table} → find ${what} ${r.contentId} → delete the row.`,
-    `Report log: Supabase → Table Editor → content_reports (report ${r.id}).`,
+    `To remove it: log in as admin, open the story above, and click "${what === "story" ? "Remove story (admin)" : "Remove (admin)"}"${what === "reply" ? " under the reply" : ""}.`,
+    `Report reference: ${r.id}`,
   ].join("\n");
 
   const html = `
@@ -209,9 +207,9 @@ export async function sendReportAlert(r: ReportAlert): Promise<void> {
       <div style="white-space:pre-wrap;background:#FCEEDC;border-radius:8px;padding:14px 16px">${esc(r.contentText)}</div>
       <p><a href="${esc(url)}" style="color:#CE4B59;font-weight:bold">View it →</a></p>
       <p style="font-size:13px;color:#41546A">
-        To remove it: Supabase → Table Editor → <em>${esc(table)}</em> → find ${esc(what)}
-        <code>${esc(r.contentId)}</code> → delete the row.<br>
-        Report log: <em>content_reports</em> (report <code>${esc(r.id)}</code>).
+        To remove it: log in as admin, open the story, and click
+        <strong>${what === "story" ? "Remove story (admin)" : "Remove (admin)"}</strong>${what === "reply" ? " under the reply" : ""}.<br>
+        Report reference: <code>${esc(r.id)}</code>.
       </p>
     </div>`;
 

@@ -25,7 +25,8 @@ function timeAgo(iso: string): string {
 }
 
 function CommentNode({ node, storyId }: { node: ReplyNode; storyId: string }) {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
+  const asAdmin = !!user && user.id !== node.author_id;
   const router = useRouter();
   const [replying, setReplying] = useState(false);
   const [text, setText] = useState("");
@@ -37,8 +38,8 @@ function CommentNode({ node, storyId }: { node: ReplyNode; storyId: string }) {
     const nested = countAll(node.children);
     const warning =
       nested > 0
-        ? `Delete your reply permanently? This also deletes the ${nested} ${nested === 1 ? "reply" : "replies"} under it, and it can't be undone.`
-        : "Delete your reply permanently? This can't be undone.";
+        ? `${asAdmin ? "Remove this reply" : "Delete your reply"} permanently? This also deletes the ${nested} ${nested === 1 ? "reply" : "replies"} under it, and it can't be undone.`
+        : `${asAdmin ? "Remove this reply" : "Delete your reply"} permanently? This can't be undone.`;
     if (!window.confirm(warning)) return;
     setDeleting(true);
     const result = await deleteReply(storyId, node.id);
@@ -76,13 +77,13 @@ function CommentNode({ node, storyId }: { node: ReplyNode; storyId: string }) {
           >
             Reply
           </button>
-          {user?.id === node.author_id && (
+          {(user?.id === node.author_id || isAdmin) && (
             <button
               className={styles.dangerLink}
               onClick={removeReply}
               disabled={deleting}
             >
-              {deleting ? "Deleting…" : "Delete"}
+              {deleting ? "Deleting…" : asAdmin ? "Remove (admin)" : "Delete"}
             </button>
           )}
           <ReportButton contentType="reply" contentId={node.id} />

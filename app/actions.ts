@@ -206,6 +206,14 @@ export async function submitLetterRequest(formData: FormData): Promise<ActionRes
   return { ok: true };
 }
 
+async function isAdminUser(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  userId: string
+): Promise<boolean> {
+  const { data } = await supabase.from("profiles").select("role").eq("id", userId).single();
+  return data?.role === "admin";
+}
+
 export async function deleteStory(storyId: string): Promise<ActionResult> {
   const supabase = await createClient();
   const {
@@ -213,12 +221,10 @@ export async function deleteStory(storyId: string): Promise<ActionResult> {
   } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "You must be logged in." };
 
-  const { data, error } = await supabase
-    .from("stories")
-    .delete()
-    .eq("id", storyId)
-    .eq("author_id", user.id)
-    .select("id");
+  const admin = await isAdminUser(supabase, user.id);
+  let del = supabase.from("stories").delete().eq("id", storyId);
+  if (!admin) del = del.eq("author_id", user.id);
+  const { data, error } = await del.select("id");
 
   if (error) return { ok: false, error: error.message };
   if (!data || data.length === 0) {
@@ -236,12 +242,10 @@ export async function deleteReply(storyId: string, replyId: string): Promise<Act
   } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "You must be logged in." };
 
-  const { data, error } = await supabase
-    .from("story_replies")
-    .delete()
-    .eq("id", replyId)
-    .eq("author_id", user.id)
-    .select("id");
+  const admin = await isAdminUser(supabase, user.id);
+  let del = supabase.from("story_replies").delete().eq("id", replyId);
+  if (!admin) del = del.eq("author_id", user.id);
+  const { data, error } = await del.select("id");
 
   if (error) return { ok: false, error: error.message };
   if (!data || data.length === 0) {

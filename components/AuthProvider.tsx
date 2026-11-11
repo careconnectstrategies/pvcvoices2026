@@ -9,6 +9,7 @@ type AuthContextValue = {
   session: Session | null;
   loading: boolean;
   firstName: string;
+  isAdmin: boolean;
   signOut: () => Promise<void>;
 };
 
@@ -18,6 +19,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const supabase = useMemo(() => createClient(), []);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -35,6 +37,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [supabase]);
 
   const user = session?.user ?? null;
+  const userId = user?.id ?? null;
+
+  // Look up the member's role (members can read only their own profile row).
+  useEffect(() => {
+    let cancelled = false;
+    if (!userId) {
+      setIsAdmin(false);
+      return;
+    }
+    supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", userId)
+      .single()
+      .then(({ data }) => {
+        if (!cancelled) setIsAdmin(data?.role === "admin");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [supabase, userId]);
+
   const firstName =
     (user?.user_metadata?.first_name as string | undefined) || "there";
 
@@ -43,6 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     session,
     loading,
     firstName,
+    isAdmin,
     signOut: async () => {
       await supabase.auth.signOut();
     },
