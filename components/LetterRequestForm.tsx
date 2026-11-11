@@ -27,7 +27,7 @@ export default function LetterRequestForm() {
       <div className="form-grid">
         <div className="field">
           <label htmlFor="l-name">Full name</label>
-          <input type="text" id="l-name" name="full_name" required autoComplete="name" placeholder="Used as your signature on the letter" />
+          <input type="text" id="l-name" name="full_name" required autoComplete="name" placeholder="As you want it to appear in the letter" />
         </div>
         <div className="field">
           <label htmlFor="l-email">Email</label>
@@ -45,7 +45,7 @@ export default function LetterRequestForm() {
           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
         </svg>
         <span>
-          Your name, city/state, and email are used only to complete,
+          Your name and email are used only to complete,
           send, and CC you on this email. We will never use your contact
           information for marketing purposes.
         </span>
