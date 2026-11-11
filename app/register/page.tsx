@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function RegisterPage(props: PageProps<"/register">) {
   const params = await props.searchParams;
   const nextParam = params.next;
-  const next = (Array.isArray(nextParam) ? nextParam[0] : nextParam) || "/patient-stories#submit";
+  const next = (Array.isArray(nextParam) ? nextParam[0] : nextParam) || "/welcome";
 
   return (
     <>
