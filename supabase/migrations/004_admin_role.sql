@@ -1,8 +1,8 @@
 -- PVC Voices — admin role.
 -- Run once in Supabase → SQL Editor. Safe to re-run.
 --
--- BEFORE running: the admin must have registered on the site with the
--- email in step 4 (support@pvcvoices.org), and confirmed it.
+-- Each admin must have registered on the site with the emails in step 5
+-- and confirmed them. Re-run this file after any of them registers.
 
 -- 1. A role on every profile: 'user' (default) or 'admin'.
 alter table public.profiles add column if not exists role text not null default 'user';
@@ -39,7 +39,16 @@ create policy "replies: admin delete"
   to authenticated
   using (public.is_admin());
 
--- 5. Make the site admin an admin.
-update public.profiles set role = 'admin' where email = 'support@pvcvoices.org';
+-- 5. The three admins.
+update public.profiles
+set role = 'admin'
+where lower(email) in (
+  'paige@careconnectstrategies.com',
+  'raymond.dettinger@comcast.net',
+  'support@pvcvoices.org'
+);
+
+-- 6. Check: lists every admin that is set up (should show up to 3 rows).
+select email, role from public.profiles where role = 'admin' order by email;
 
 notify pgrst, 'reload schema';
