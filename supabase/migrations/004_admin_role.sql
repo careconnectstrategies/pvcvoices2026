@@ -48,7 +48,7 @@ where lower(email) in (
   'support@pvcvoices.org'
 );
 
--- 6. Check: lists every admin that is set up (should show up to 3 rows).
-select email, role from public.profiles where role = 'admin' order by email;
-
 notify pgrst, 'reload schema';
+
+-- 6. Check (keep this last so the result shows): every admin that is set up.
+select email, role from public.profiles where role = 'admin' order by email;
